@@ -51,12 +51,18 @@ How to Run
 ---
 
  File Structure
+ 
 social-media-db/
-│── 1_schema.sql
-│── 2_sample_data.sql
-│── 3_queries.sql
-│── `social_media.sql` → Full project file
-│──`README.md` → Documentation
+
+│─ 1_schema.sql
+
+│─ 2_sample_data.sql
+
+│─ 3_queries.sql
+
+│─ social_media_platform.sql → Full project file
+
+│─ README.md → Documentation
 
 ---
 
