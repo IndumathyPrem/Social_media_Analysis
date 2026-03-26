@@ -51,9 +51,12 @@ How to Run
 ---
 
  File Structure
-
-* `social_media.sql` → Full project file
-* `README.md` → Documentation
+social-media-db/
+│── 1_schema.sql
+│── 2_sample_data.sql
+│── 3_queries.sql
+│── `social_media.sql` → Full project file
+│──`README.md` → Documentation
 
 ---
 
@@ -69,4 +72,4 @@ Future Improvements
 Author
 
 Indumathy
-Dataset - AI generated
+
