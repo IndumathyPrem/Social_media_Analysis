@@ -87,3 +87,77 @@ JOIN users u ON p.user_id = u.user_id
 LEFT JOIN likes l ON p.post_id = l.post_id
 LEFT JOIN comments c ON p.post_id = c.post_id
 GROUP BY p.post_id, u.username;
+-- Top influencers (users with highest total engagement)
+SELECT 
+    u.user_id,
+    u.username,
+    COUNT(DISTINCT l.like_id) + COUNT(DISTINCT c.comment_id) AS total_engagement
+FROM users u
+LEFT JOIN posts p ON u.user_id = p.user_id
+LEFT JOIN likes l ON p.post_id = l.post_id
+LEFT JOIN comments c ON p.post_id = c.post_id
+GROUP BY u.user_id, u.username
+ORDER BY total_engagement DESC
+LIMIT 10;
+
+-- Virality report (posts with unusually high engagement)
+SELECT 
+    p.post_id,
+    u.username,
+    p.caption,
+    COUNT(DISTINCT l.like_id) + COUNT(DISTINCT c.comment_id) AS engagement
+FROM posts p
+JOIN users u ON p.user_id = u.user_id
+LEFT JOIN likes l ON p.post_id = l.post_id
+LEFT JOIN comments c ON p.post_id = c.post_id
+GROUP BY p.post_id, u.username, p.caption
+HAVING engagement > (
+    SELECT AVG(total_engagement)
+    FROM (
+        SELECT 
+            p.post_id,
+            COUNT(DISTINCT l.like_id) + COUNT(DISTINCT c.comment_id) AS total_engagement
+        FROM posts p
+        LEFT JOIN likes l ON p.post_id = l.post_id
+        LEFT JOIN comments c ON p.post_id = c.post_id
+        GROUP BY p.post_id
+    ) avg_table
+)
+ORDER BY engagement DESC;
+-- User activity timeline (daily/weekly posting patterns)
+SELECT 
+    DATE(posted_at) AS post_date,
+    COUNT(*) AS total_posts
+FROM posts
+GROUP BY DATE(posted_at)
+ORDER BY post_date;
+
+SELECT 
+    WEEK(posted_at) AS week_number,
+    COUNT(*) AS total_posts
+FROM posts
+GROUP BY WEEK(posted_at)
+ORDER BY week_number;
+
+-- Follower growth(who gained the most followers recently)
+SELECT 
+    u.user_id,
+    u.username,
+    COUNT(f.follower_id) AS new_followers
+FROM users u
+LEFT JOIN followers f ON u.user_id = f.following_id
+WHERE f.follow_date >= NOW() - INTERVAL 30 DAY
+GROUP BY u.user_id, u.username
+ORDER BY new_followers DESC
+LIMIT 10;
+
+-- Trending hashtags (most used hashtags in last 30 days)
+SELECT 
+    p.post_id,
+    COUNT(DISTINCT l.like_id) AS likes,
+    COUNT(DISTINCT c.comment_id) AS comments,
+    (COUNT(DISTINCT l.like_id) + COUNT(DISTINCT c.comment_id)) AS engagement
+FROM posts p
+LEFT JOIN likes l ON p.post_id = l.post_id
+LEFT JOIN comments c ON p.post_id = c.post_id
+GROUP BY p.post_id;
