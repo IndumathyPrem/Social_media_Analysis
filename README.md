@@ -28,10 +28,18 @@ It includes users, posts, likes, comments, and follower relationships.
 
  Sample Insights
 
-* Top active users
-* Posts with most likes & comments
-* Users with NULL captions
-* Engagement analysis
+Analytical Insights
+ 1. Top Influencers
+Identified users with the highest engagement (likes + comments), helping determine key contributors on the platform.
+ 2. Virality Analysis
+Detected posts with unusually high engagement compared to average engagement levels.
+3. User Activity Timeline
+Analyzed daily and weekly posting trends to understand user behavior patterns.
+ 4. Follower Growth
+Tracked users who gained the most followers in recent time periods.
+5. Trending Hashtags
+Extracted and ranked hashtags based on usage in recent posts to identify trending topics.
+
 
 ---
 
